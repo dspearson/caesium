@@ -607,7 +607,17 @@
       ^bytes ^{Pinned {}} tx
       ^bytes ^{Pinned {}} server_pk
       ^bytes ^{Pinned {}} server_sk
-      ^bytes ^{Pinned {}} client_pk]]])
+      ^bytes ^{Pinned {}} client_pk]]
+
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_abytes[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_headerbytes[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_keybytes[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_messagebytes_max[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_message[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_push[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_rekey[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_final[]]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_statebytes[]]])
 
 (def ^:private bound-fns
   "A mapping of type- and jnr.ffi-annotated bound method symbols to
