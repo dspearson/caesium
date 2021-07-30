@@ -10,7 +10,8 @@
             [clojure.string :as str])
   (:import [jnr.ffi LibraryLoader LibraryOption]
            [jnr.ffi.annotations In Out Pinned LongLong]
-           [jnr.ffi.types size_t]))
+           [jnr.ffi.types size_t]
+           [java.util.concurrent Executors ExecutorService]))
 
 (def ^:private bound-byte-type-syms
   '[bytes java.nio.ByteBuffer])
@@ -721,8 +722,11 @@
   "The sodium library singleton instance."
   (load-sodium))
 
-(assert (#{0 1} (.sodium_init sodium)))
-;; TODO When does this get called? Guaranteed from 1 thread?
+;; Guaranteed to execute in one thread only, and blocks until execution is complete.
+(defonce ^ExecutorService single-thread-executor (Executors/newFixedThreadPool 1))
+(defonce sodium-init? @(.submit single-thread-executor ^Callable #(.sodium_init sodium)))
+(or (.isTerminated single-thread-executor) (.shutdown single-thread-executor))
+(assert (#{0 1} sodium-init?))
 
 (defn ^:private c-name
   "Resolves the fn name in the current ns to the fn name in the equivalent
