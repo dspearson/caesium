@@ -1,9 +1,10 @@
 # caesium
 
-![caesium spectral lines](https://dl.dropboxusercontent.com/u/38476311/Logos/caesium.png)
+![caesium spectral lines](https://raw.githubusercontent.com/lvh/caesium/master/caesium.png)
 
 [![Clojars Project](http://clojars.org/caesium/latest-version.svg)](http://clojars.org/caesium)
-[![Build Status](https://travis-ci.org/lvh/caesium.svg?branch=master)](https://travis-ci.org/lvh/caesium)
+
+[![Build Status](https://github.com/lvh/caesium/workflows/build/badge.svg?branch=master)](https://github.com/lvh/caesium/actions?query=workflow%3Abuild)
 [![codecov](https://codecov.io/gh/lvh/caesium/branch/master/graph/badge.svg)](https://codecov.io/gh/lvh/caesium)
 [![Dependencies Status](https://versions.deps.co/lvh/caesium/status.svg)](https://versions.deps.co/lvh/caesium)
 
@@ -17,7 +18,7 @@ a more convenient fork of the original [NaCl][nacl] library by
 [djb]: http://cr.yp.to/djb.html
 [libsodium]: https://github.com/jedisct1/libsodium
 
-***NOTE:*** Install [libsodium](https://libsodium.gitbook.io/doc/installation) before trying to use caesium.
+***NOTE:*** Install [libsodium 1.0.18+](https://libsodium.gitbook.io/doc/installation) before trying to use caesium.
 
 ## Minimum viable snippet
 
@@ -45,7 +46,80 @@ small wrappers around that, everything in it applies.
 
 ### Password hashing
 
-Documentation coming soon.
+Here's an example of how you can use pwhash:
+
+``` clojure
+(ns pwhash-usage
+  (:require [caesium.crypto.pwhash :as pwhash]
+            [caesium.randombytes :as rb]
+            [caesium.byte-bufs :as bb]
+            [caesium.util :as u]
+            [caesium.crypto.secretbox :as sb]))
+
+;; helper function for creating salts from integers. may be useful for deterministic
+;; key derivation, incrementing subkeys from 0.
+(def int->salt (partial u/n->bytes pwhash/saltbytes))
+
+;; hashing passwords
+(def password "example")
+(def hashed-password (pwhash/pwhash-str password 
+                                        pwhash/opslimit-sensitive
+                                        pwhash/memlimit-sensitive))
+(assert (= 0 (pwhash/pwhash-str-verify hashed-password password)))
+
+;; key derivation
+(def salt (rb/randombytes pwhash/saltbytes)) ; changing salt means changed derived key
+(def derived-key (pwhash/pwhash msb/keybytes
+                                password
+                                salt
+                                pwhash/opslimit-sensitive
+                                pwhash/memlimit-sensitive
+                                pwhash/alg-default))
+(def message (.getBytes "hello, world!"))
+(def encrypted-message (sb/encrypt derived-key (sb/int->nonce 0) message))
+(def decrypted-message (sb/decrypt derived-key (sb/int->nonce 0) encrypted-message))
+(assert (bb/bytes= message decrypted-message))
+```
+
+### Usage with Github Actions secrets
+
+Here is how you can create or update a repository secret for GitHub actions:
+
+``` clojure
+(require '[caesium.crypto.box])
+(require '[clj-http.client :as http])
+(require '[jsonista.core :as json])
+(import '(java.util Base64))
+
+(def public-key
+  "The public key of the repository of which you want to create or update a secret"
+  (let [payload (-> {:request-method :get
+                     :url "https://api.github.com/repos/{owner}/{repo}/actions/secrets/public-key"
+                     :basic-auth ["{user}" "{GITHUB_TOKEN}"]
+                     :headers {"Content-Type" "application/json"
+                               "Accept" "application/vnd.github.v3+json"}}
+                    http/request
+                    :body
+                    json/read-value)
+        ^String encoded-key (get payload "key")]
+    {:decoded-key (.decode (Base64/getDecoder) (.getBytes encoded-key))
+     :key-id (get payload "key_id")}))
+
+(let [{:keys [^String decoded-key ^String key-id]} public-key
+      plaintext "MY_SECRET_VALUE"
+      cyphertext (caesium.crypto.box/box-seal
+                   (byte-streams/to-byte-array plaintext)
+                   decoded-key)]
+  (http/request
+    {:request-method :put
+     :url "https://api.github.com/repos/{owner}/{repo}/actions/secrets/{MY_SECRET}"
+     :body (json/write-value-as-string
+             {:encrypted_value (.encodeToString (Base64/getEncoder) cyphertext)
+              :key_id key-id})
+     :basic-auth ["{user}" "{GITHUB_TOKEN}"]
+     :headers {"Content-Type" "application/json"
+               "Accept" "application/vnd.github.v3+json"}}))
+```
 
 ## Differences with other bindings
 

@@ -1,6 +1,25 @@
 # Unreleased
 
-Nothing yet :-)
+Nothing yet!
+
+# 0.15.0
+
+Fail immediately and with a more informative error when possible (#88).
+Added support for `crypto_pwhash` (password hashing).
+Some housekeeping (more examples, better CI).
+
+# 0.14.0
+
+Added support for `crypto_kdf` (key derivation).
+Added support for `crypto_scalarmult_ristretto255` and `crypto_core_ristretto255`.
+
+# 0.13.0
+
+Added support for `crypto_kx` (key exchange).
+
+Some safety improvements to BLAKE2b API (#62) error handling.
+
+Minor documentation improvements, significant testing and library management improvements.
 
 # 0.12.0
 

@@ -440,6 +440,17 @@
       ^bytes ^{Pinned {}} n
       ^bytes ^{Pinned {}} p]]
 
+    [^long ^{size_t {}} crypto_scalarmult_ristretto255_bytes []]
+    [^long ^{size_t {}} crypto_scalarmult_ristretto255_scalarbytes []]
+
+    [^int crypto_scalarmult_ristretto255_base
+     [^bytes ^{Pinned {}} q
+      ^bytes ^{Pinned {}} n]]
+    [^int crypto_scalarmult_ristretto255
+     [^bytes ^{Pinned {}} q
+      ^bytes ^{Pinned {}} n
+      ^bytes ^{Pinned {}} p]]
+
     [^long ^{size_t {}} crypto_aead_chacha20poly1305_ietf_keybytes []]
     [^long ^{size_t {}} crypto_aead_chacha20poly1305_ietf_nsecbytes []]
     [^long ^{size_t {}} crypto_aead_chacha20poly1305_ietf_npubbytes []]
@@ -609,15 +620,101 @@
       ^bytes ^{Pinned {}} server_sk
       ^bytes ^{Pinned {}} client_pk]]
 
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_abytes[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_headerbytes[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_keybytes[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_messagebytes_max[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_message[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_push[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_rekey[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_final[]]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_statebytes[]]])
+<<<<<<< Updated upstream
+    [^long ^{size_t {}} crypto_kdf_bytes_min]
+    [^long ^{size_t {}} crypto_kdf_bytes_max]
+    [^long ^{size_t {}} crypto_kdf_contextbytes]
+    [^long ^{size_t {}} crypto_kdf_keybytes]
+    [^String crypto_kdf_primitive []]
+    [^void crypto_kdf_keygen
+     [^bytes ^{Pinned {}} k]]
+    [^int crypto_kdf_derive_from_key
+     [^bytes ^{Pinned {}} subk
+      ^long ^{LongLong {}} subklen
+      ^long ^{LongLong {}} subkid
+      ^bytes ^{Pinned {}} ctx
+      ^bytes ^{Pinned {}} k]]
+
+    [^long ^{size_t {}} crypto_core_ristretto255_bytes []]
+    [^long ^{size_t {}} crypto_core_ristretto255_hashbytes []]
+    [^long ^{size_t {}} crypto_core_ristretto255_scalarbytes []]
+    [^long ^{size_t {}} crypto_core_ristretto255_nonreducedscalarbytes []]
+    [^int crypto_core_ristretto255_is_valid_point
+     [^bytes ^{Pinned {}} p]]
+    [^int crypto_core_ristretto255_add
+     [^bytes ^{Pinned {}} r
+      ^bytes ^{Pinned {}} p
+      ^bytes ^{Pinned {}} q]]
+    [^int crypto_core_ristretto255_sub
+     [^bytes ^{Pinned {}} r
+      ^bytes ^{Pinned {}} p
+      ^bytes ^{Pinned {}} q]]
+    [^int crypto_core_ristretto255_from_hash
+     [^bytes ^{Pinned {}} p
+      ^bytes ^{Pinned {}} r]]
+    [^void crypto_core_ristretto255_random
+     [^bytes ^{Pinned {}} p]]
+    [^void crypto_core_ristretto255_scalar_random
+     [^bytes ^{Pinned {}} r]]
+    [^int crypto_core_ristretto255_scalar_invert
+     [^bytes ^{Pinned {}} recip
+      ^bytes ^{Pinned {}} s]]
+    [^void crypto_core_ristretto255_scalar_negate
+     [^bytes ^{Pinned {}} neg
+      ^bytes ^{Pinned {}} s]]
+    [^void crypto_core_ristretto255_scalar_complement
+     [^bytes ^{Pinned {}} result
+      ^bytes ^{Pinned {}} s]]
+    [^void crypto_core_ristretto255_scalar_add
+     [^bytes ^{Pinned {}} z
+      ^bytes ^{Pinned {}} x
+      ^bytes ^{Pinned {}} y]]
+    [^void crypto_core_ristretto255_scalar_sub
+     [^bytes ^{Pinned {}} z
+      ^bytes ^{Pinned {}} x
+      ^bytes ^{Pinned {}} y]]
+    [^void crypto_core_ristretto255_scalar_mul
+     [^bytes ^{Pinned {}} z
+      ^bytes ^{Pinned {}} x
+      ^bytes ^{Pinned {}} y]]
+    [^void crypto_core_ristretto255_scalar_reduce
+     [^bytes ^{Pinned {}} r
+      ^bytes ^{Pinned {}} s]]
+    [^int crypto_core_ristretto255_scalar_is_canonical
+     [^bytes ^{Pinned {}} s]]])
+
+
+=======
+    [^int crypto_secretstream_xchacha20poly1305_init_push
+     [^{crypto_secretstream_xchacha20poly1305_state *} state
+      ^bytes ^{Pinned {}} header
+      ^bytes ^{Pinned {}} k]]
+
+    [^int crypto_secretstream_xchacha20poly1305_push
+     [^{crypto_secretstream_xchacha20poly1305_state *} state
+      ^bytes ^{Pinned {}} c
+      ^jnr.ffi.byref.LongLongByReference clen_p
+      ^bytes ^{Pinned {}} m
+      ^long ^{LongLong {}} mlen
+      ^bytes ^{Pinned {}} ad
+      ^long ^{LongLong {}} adlen
+      ^bytes tag]]
+
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_abytes []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_headerbytes []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_keybytes []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_messagebytes_max []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_message []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_push []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_rekey []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_final []]
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_statebytes []]
+    ;; [^int crypto_secretstream_xchacha20poly1305_init_push
+    ;;  [^{crypto_secretstream_xchacha20poly1305_state *} state
+    ;;   ^bytes ^{Pinned {}} header
+    ;;   ^bytes ^{Pinned {}} k]]
+    ])
+>>>>>>> Stashed changes
 
 (def ^:private bound-fns
   "A mapping of type- and jnr.ffi-annotated bound method symbols to
@@ -649,17 +746,16 @@
    (try
      (->
       (LibraryLoader/create Sodium)
-      (.option LibraryOption/IgnoreError true)
+      (.failImmediately)
       (.load lib))
      (catch Exception e
-       (throw (ClassNotFoundException. "unable to load native libsodium; is it installed?"))))))
+       (throw (ClassNotFoundException. "unable to load native libsodium; is it installed?" e))))))
 
 (def ^Sodium sodium
   "The sodium library singleton instance."
   (load-sodium))
 
 (assert (#{0 1} (.sodium_init sodium)))
-;; TODO When does this get called? Guaranteed from 1 thread?
 
 (defn ^:private c-name
   "Resolves the fn name in the current ns to the fn name in the equivalent
