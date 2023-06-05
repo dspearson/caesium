@@ -620,7 +620,6 @@
       ^bytes ^{Pinned {}} server_sk
       ^bytes ^{Pinned {}} client_pk]]
 
-<<<<<<< Updated upstream
     [^long ^{size_t {}} crypto_kdf_bytes_min]
     [^long ^{size_t {}} crypto_kdf_bytes_max]
     [^long ^{size_t {}} crypto_kdf_contextbytes]
@@ -681,17 +680,21 @@
      [^bytes ^{Pinned {}} r
       ^bytes ^{Pinned {}} s]]
     [^int crypto_core_ristretto255_scalar_is_canonical
-     [^bytes ^{Pinned {}} s]]])
+     [^bytes ^{Pinned {}} s]]
 
+    [^long ^{size_t {}} crypto_stream_chacha20_keybytes []]
+    [^long ^{size_t {}} crypto_stream_chacha20_noncebytes []]
 
-=======
+    [^long ^{size_t {}} crypto_stream_chacha20_ietf_keybytes []]
+    [^long ^{size_t {}} crypto_stream_chacha20_ietf_noncebytes []]
+
     [^int crypto_secretstream_xchacha20poly1305_init_push
-     [^{crypto_secretstream_xchacha20poly1305_state *} state
+     [^jnr.ffi.Pointer ^{Pinned {}} state
       ^bytes ^{Pinned {}} header
       ^bytes ^{Pinned {}} k]]
 
     [^int crypto_secretstream_xchacha20poly1305_push
-     [^{crypto_secretstream_xchacha20poly1305_state *} state
+     [^bytes ^{Pinned {}} state
       ^bytes ^{Pinned {}} c
       ^jnr.ffi.byref.LongLongByReference clen_p
       ^bytes ^{Pinned {}} m
@@ -700,6 +703,9 @@
       ^long ^{LongLong {}} adlen
       ^bytes tag]]
 
+    [^int crypto_secretstream_xchacha20poly1305_keygen
+     [^bytes ^{Pinned {}} k]]
+
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_abytes []]
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_headerbytes []]
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_keybytes []]
@@ -707,14 +713,7 @@
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_message []]
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_push []]
     [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_rekey []]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_final []]
-    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_statebytes []]
-    ;; [^int crypto_secretstream_xchacha20poly1305_init_push
-    ;;  [^{crypto_secretstream_xchacha20poly1305_state *} state
-    ;;   ^bytes ^{Pinned {}} header
-    ;;   ^bytes ^{Pinned {}} k]]
-    ])
->>>>>>> Stashed changes
+    [^long ^{size_t {}} crypto_secretstream_xchacha20poly1305_tag_final []]])
 
 (def ^:private bound-fns
   "A mapping of type- and jnr.ffi-annotated bound method symbols to
