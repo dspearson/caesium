@@ -694,7 +694,7 @@
       ^bytes ^{Pinned {}} k]]
 
     [^int crypto_secretstream_xchacha20poly1305_push
-     [^bytes ^{Pinned {}} state
+     [^jnr.ffi.Pointer ^{Pinned {}} state
       ^bytes ^{Pinned {}} c
       ^jnr.ffi.byref.LongLongByReference clen_p
       ^bytes ^{Pinned {}} m
